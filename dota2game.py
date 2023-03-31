@@ -1,5 +1,4 @@
 import random
-
 end = '''
  ________ __    __ ________        ________ __    __ _______
 |        |  \  |  |        \      |        |  \  |  |       |
@@ -32,7 +31,6 @@ start = '''
   ..  ..  ..  .7PPYY?YYY?JJPG5?7.YGP?Y57^^!YYPGJJ^^PGY?YY:  ~JYPG?J:!GG?JYYYYJJJPGP7J...  ..  ..  ..
 ..  ..  ..  .. .:?P5?J??7!^J5Y?~.JP5??J~  :?Y55JJ^:Y5Y??J^  ~?555??.~55J?????!?^?55?7.  ..  ..  ..
   ..  ..  ..  .. .:::::::. .:::. .:::::.  .:::::: .:::::. ...:::::...:::::::::. .:::. ..  ..  ..  ..
-
 '''
 class Hero:
     def __init__(self, name, attack, defense, hp):
@@ -49,6 +47,7 @@ class Hero:
         else:
             print(f"{self.name} не наносит урона {enemy.name}")
 
+
     def is_alive(self):
         return self.hp > 0
 
@@ -60,24 +59,31 @@ class Game:
     def __init__(self, player_hero, computer_hero):
         self.player_hero = player_hero
         self.computer_hero = computer_hero
+        self.rounds = 0
+
+
 
     def play(self):
+
         print(start)
         print(f"Вы играете за {self.player_hero}")
         print(f"Компьютер играет за {self.computer_hero}")
 
         while self.player_hero.is_alive() and self.computer_hero.is_alive():
+            self.rounds += 1
             print(f"Ход {self.player_hero.name}")
             self.player_turn()
             if not self.computer_hero.is_alive():
                 break
             print(f"Ход {self.computer_hero.name}")
             self.computer_turn()
-
+            print("<<----------------------------------------------------->>")
         if self.player_hero.is_alive():
             print("Вы победили!")
+            print(f'Количество сыгранных раундов --> {self.rounds}')
         else:
             print("Вы проиграли!")
+            print(f'Количество сыгранных раундов --> {self.rounds}')
 
     def player_turn(self):
         while True:
@@ -85,15 +91,20 @@ class Game:
             print("1. Атаковать")
             print("2. Защищаться")
             choice = input("Введите номер действия: ")
+            print("<<----------------------------------------------------->>")
             if choice == "1":
                 self.player_hero.attack_enemy(self.computer_hero)
+                print(f'В супротивника залишилося {self.computer_hero.hp} хп')
                 break
             elif choice == "2":
                 self.player_hero.defense += 2
                 print(f"{self.player_hero.name} укрепляет свою защиту")
+                print(f'В супротивника залишилося {self.computer_hero.hp} хп')
                 break
+
             else:
                 print("Неправильный выбор, повторите попытку")
+
 
     def computer_turn(self):
         choice = random.choice(["attack", "defense"])
